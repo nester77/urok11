@@ -11,10 +11,10 @@ public class AddressConnector {
 
     private Connection connection;
 
-    private static final String ADD = "INSERT INTO persons (first_name, last_name, email, age, city) VALUES(?, ?, ?, ?, ?)";
+    private static final String ADD = "INSERT INTO persons (city, street, numberOfHouse,numberOfBuilding, numberOfFlat) VALUES(?, ?, ?, ?, ?)";
     private static final String REQUEST = "SELECT * FROM persons";
-    private static final String DELETE =  "DELETE FROM address WHERE id = ? ";
-    private static final String UPDATE =  "DELETE FROM address WHERE id = ? ";
+    private static final String DELETE = "DELETE FROM address WHERE id = ? ";
+    private static final String UPDATE = "UPDATE addresses SET city = '?', street = '?', numberOfHouse = ?, numberOfBuilding = ?, numberOfFlat = ? WHERE id = ?";
 
     public AddressConnector(Connection connection) {
         this.connection = connection;
@@ -35,7 +35,7 @@ public class AddressConnector {
                 int numberOfBuilding = result.getInt("корпус");
                 int numberOfFlat = result.getInt("квартира");
 
-                Address p = new Address(id, city, street, numberOfHouse,numberOfBuilding, numberOfFlat);
+                Address p = new Address(id, city, street, numberOfHouse, numberOfBuilding, numberOfFlat);
 
                 res.add(p);
             }
@@ -51,7 +51,7 @@ public class AddressConnector {
     public void add(Address address) {
         try (PreparedStatement statement = connection.prepareStatement(ADD)) {
             statement.setString(1, address.getCity());
-            statement.setString(2,address.getStreet());
+            statement.setString(2, address.getStreet());
             statement.setInt(3, address.getNumberOfHouse());
             statement.setInt(4, address.getNumberOfBuilding());
             statement.setInt(5, address.getNumberOfFlat());
@@ -64,25 +64,33 @@ public class AddressConnector {
             e.printStackTrace();
         }
     }
+
     void delete(int id) {
         try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
-           statement.setInt(id);
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-    }
-
-        void update(Address address){
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
-            statement.setInt(id);
+            statement.setInt(1, id);
 
 
         } catch (SQLException e) {
             e.printStackTrace();
 
         }
+    }
+
+    void update(Address address) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
+            statement.setInt(6, address.getId());
+            statement.setString(1, address.getCity());
+            statement.setString(2, address.getStreet());
+            statement.setInt(3, address.getNumberOfHouse());
+            statement.setInt(4, address.getNumberOfBuilding());
+            statement.setInt(5, address.getNumberOfFlat());
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
 }
 //    void add(Address address) - для записи объекта в БД
 //        List<Address> readAll() - читает все содержимое таблицы и складывает это в результирующую коллекцию

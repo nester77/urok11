@@ -1,6 +1,6 @@
 CREATE DATABASE IF NOT EXISTS addresses_db;
 
-USE persons_db;
+USE addresses_db;
 
 
 CREATE TABLE IF NOT EXISTS address (
