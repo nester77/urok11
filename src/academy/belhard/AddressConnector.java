@@ -59,7 +59,6 @@ public class AddressConnector {
             statement.setInt(6, address.getNumberOfFlat());
             int res = statement.executeUpdate();
 
-        //    System.out.println(res);
 
         } catch (SQLException e) {
             e.printStackTrace();
