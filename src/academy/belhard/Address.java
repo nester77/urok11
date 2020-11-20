@@ -17,24 +17,28 @@ class Address {
         this.numberOfFlat=numberOfFlat;
     }
 
-//    public void setId(int id) {
-//
-//        this.id=id;
-//    }
+    public Address setId(int id) {
 
-    public void setCity(String city) {
+        this.id=id;
+        return this;
+    }
+
+    public Address setCity(String city) {
 
         this.city=city;
+        return this;
     }
 
-    public void setStreet(String street){
+    public Address setStreet(String street){
 
         this.street=street;
+        return this;
     }
 
-    public void setNumberOfHouse(int numberOfHouse){
+    public Address setNumberOfHouse(int numberOfHouse){
 
         this.numberOfHouse=numberOfHouse;
+        return this;
     }
 
     public void setNumberOfBuilding(int numberOfBuilding){
@@ -72,7 +76,7 @@ class Address {
     @Override
     public String toString() {
 
-        return "Город: "+ city+", Улица: "+ street + ", Дом: "+numberOfHouse+ ", Корпус: "+numberOfBuilding +", Квартира: " + numberOfFlat;
+        return "ID:"+ id+ " Город: "+ city+", Улица: "+ street + ", Дом: "+numberOfHouse+ ", Корпус: "+numberOfBuilding +", Квартира: " + numberOfFlat;
     }
 
 

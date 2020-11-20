@@ -11,10 +11,11 @@ public class AddressConnector {
 
     private Connection connection;
 
-    private static final String ADD = "INSERT INTO persons (city, street, numberOfHouse,numberOfBuilding, numberOfFlat) VALUES(?, ?, ?, ?, ?)";
-    private static final String REQUEST = "SELECT * FROM persons";
-    private static final String DELETE = "DELETE FROM address WHERE id = ? ";
-    private static final String UPDATE = "UPDATE addresses SET city = '?', street = '?', numberOfHouse = ?, numberOfBuilding = ?, numberOfFlat = ? WHERE id = ?";
+    private static final String ADD = "INSERT INTO address (id, city, street, house, building, flat) VALUES(?, ?, ?, ?, ?, ?)";
+    private static final String REQUEST = "SELECT * FROM address";
+    private static final String DELETE = "DELETE FROM address WHERE id = ";
+    private static final String UPDATE = "UPDATE address SET ";
+
 
     public AddressConnector(Connection connection) {
         this.connection = connection;
@@ -29,11 +30,11 @@ public class AddressConnector {
 
             while (result.next()) {
                 int id = result.getInt("id");
-                String city = result.getString("город");
-                String street = result.getString("улица");
-                int numberOfHouse = result.getInt("номер_дома");
-                int numberOfBuilding = result.getInt("корпус");
-                int numberOfFlat = result.getInt("квартира");
+                String city = result.getString("city");
+                String street = result.getString("street");
+                int numberOfHouse = result.getInt("house");
+                int numberOfBuilding = result.getInt("building");
+                int numberOfFlat = result.getInt("flat");
 
                 Address p = new Address(id, city, street, numberOfHouse, numberOfBuilding, numberOfFlat);
 
@@ -50,15 +51,15 @@ public class AddressConnector {
 
     public void add(Address address) {
         try (PreparedStatement statement = connection.prepareStatement(ADD)) {
-            statement.setString(1, address.getCity());
-            statement.setString(2, address.getStreet());
-            statement.setInt(3, address.getNumberOfHouse());
-            statement.setInt(4, address.getNumberOfBuilding());
-            statement.setInt(5, address.getNumberOfFlat());
-
+            statement.setInt(1, address.getId());
+            statement.setString(2, address.getCity());
+            statement.setString(3, address.getStreet());
+            statement.setInt(4, address.getNumberOfHouse());
+            statement.setInt(5, address.getNumberOfBuilding());
+            statement.setInt(6, address.getNumberOfFlat());
             int res = statement.executeUpdate();
 
-            System.out.println(res);
+        //    System.out.println(res);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,9 +67,9 @@ public class AddressConnector {
     }
 
     void delete(int id) {
-        try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
-            statement.setInt(1, id);
+        try (PreparedStatement statement = connection.prepareStatement(DELETE+id)) {
 
+          int res = statement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,14 +78,17 @@ public class AddressConnector {
     }
 
     void update(Address address) {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
-            statement.setInt(6, address.getId());
-            statement.setString(1, address.getCity());
-            statement.setString(2, address.getStreet());
-            statement.setInt(3, address.getNumberOfHouse());
-            statement.setInt(4, address.getNumberOfBuilding());
-            statement.setInt(5, address.getNumberOfFlat());
+        try (PreparedStatement statement = connection.prepareStatement
+                (UPDATE+
+                        "city = '"+address.getCity()+
+                        "', street = '"+ address.getStreet()+
+                        "', house =" +address.getNumberOfHouse()+
+                        ", building ="+ address.getNumberOfBuilding()+
+                        ", flat =" + address.getNumberOfFlat()+
+                        " WHERE id ="+address.getId()))
+        {
 
+            int res = statement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,7 +96,3 @@ public class AddressConnector {
         }
     }
 }
-//    void add(Address address) - для записи объекта в БД
-//        List<Address> readAll() - читает все содержимое таблицы и складывает это в результирующую коллекцию
-//        void delete(int id) - удаляет адрес по его id
-//        void update(Address address) - обновляет запись с указанным id
