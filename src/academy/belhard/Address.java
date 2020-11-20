@@ -41,14 +41,16 @@ class Address {
         return this;
     }
 
-    public void setNumberOfBuilding(int numberOfBuilding){
+    public Address setNumberOfBuilding(int numberOfBuilding){
 
         this.numberOfBuilding=numberOfBuilding;
+        return this;
     }
 
-    public void setNumberOfFlat(int numberOfFlat){
+    public Address setNumberOfFlat(int numberOfFlat){
 
         this.numberOfFlat=numberOfFlat;
+        return this;
     }
 
     public int getId() {
@@ -78,6 +80,5 @@ class Address {
 
         return "ID:"+ id+ " Город: "+ city+", Улица: "+ street + ", Дом: "+numberOfHouse+ ", Корпус: "+numberOfBuilding +", Квартира: " + numberOfFlat;
     }
-
 
 }
